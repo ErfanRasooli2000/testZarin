@@ -2,6 +2,7 @@
 
 namespace Modules\Transaction\Services;
 
+use Modules\Transaction\Enums\TransactionTypeEnum;
 use Modules\Transaction\Models\Transaction;
 use Modules\User\Models\User;
 
@@ -14,8 +15,13 @@ class TransactionService
             ->sum("value");
     }
 
-    public function transaction($count , $type = "add")
+    public function transaction(User $user , $count)
     {
-
+        return Transaction::query()
+            ->create([
+                "type" => TransactionTypeEnum::Follow->value,
+                "value" => $count,
+                "user_id" => $user->id
+            ]);
     }
 }
